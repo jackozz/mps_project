@@ -8,13 +8,15 @@ This file contains relevant information about how develop and deploy AWS datalak
 
 ## **Phase 1: Setup & CDK**
 - AWS Regiom: `us-east-1`
-- Ppal stack name: `MpsProjectStack`
+- Ppal stack name: `mps-project-stack`
 
 ## **Phase 2: Lambda + Random User API**
-- Ingest stack name: `MpsIngestionStack`
+- Ingest stack name: `mps-ingestion-stack`
 
 ## **Phase 3: S3 + Parquet**
-- 
+- Storage stack name: `mps-storage-stack`
+- Parquet conversion
+- ETL Process
 
 ## **Phase 4: Glue + Lake Formation**
 -     

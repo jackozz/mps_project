@@ -2,15 +2,31 @@ from constructs import Construct
 from aws_cdk import (
     Duration,
     Stack,
+    CfnOutput,
     aws_iam as iam,
     aws_lambda as _lambda,
+    aws_s3 as s3,
 )
 
 class MpsIngestionStack(Stack):
+    """
+    Ingestion Stack for MPS Project.
+    
+    Creates a Lambda function that fetches data and writes to S3 bucket.
+    
+    Args:
+        data_bucket: S3 Bucket instance where Lambda will write data
+    """
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, data_bucket: s3.Bucket, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        # Validate input
+        if not isinstance(data_bucket, s3.Bucket):
+            raise TypeError("data_bucket must be an s3.Bucket instance")
+
+        self.data_bucket = data_bucket
+        
         # Create IAM Role for Lambda execution
         lambda_role = iam.Role(
             self,
@@ -47,5 +63,23 @@ class MpsIngestionStack(Stack):
             memory_size=256,
             environment={
                 "LOG_LEVEL": "INFO",
+                "BUCKET_NAME": self.data_bucket.bucket_name,
+                "BUCKET_ARN": self.data_bucket.bucket_arn,
             },
+        )
+
+        # Grant Lambda write permissions to the bucket
+        self.data_bucket.grant_write(self.data_fetcher_lambda.role)
+
+        # Export outputs
+        CfnOutput(
+            self, "DataFetcherLambdaNameOutput",
+            value=self.data_fetcher_lambda.function_name,
+            description="Name of the data fetcher Lambda function"
+        )
+
+        CfnOutput(
+            self, "DataFetcherLambdaArnOutput",
+            value=self.data_fetcher_lambda.function_arn,
+            description="ARN of the data fetcher Lambda function"
         )
