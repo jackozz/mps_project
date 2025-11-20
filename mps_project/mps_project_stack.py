@@ -1,26 +1,14 @@
 from constructs import Construct
-from aws_cdk import (
-    Duration,
-    Stack,
-    aws_iam as iam,
-    aws_sqs as sqs,
-    aws_sns as sns,
-    aws_sns_subscriptions as subs,
-)
-
+from aws_cdk import Stack
+from .mps_ingestion_stack import MpsIngestionStack
 
 class MpsProjectStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        queue = sqs.Queue(
-            self, "MpsProjectQueue",
-            visibility_timeout=Duration.seconds(300),
+        # Queue data ingestion stack
+        self.ingestion_stack = MpsIngestionStack(
+            self, "IngestionStack",
+            stack_name="mps-ingestion-stack"
         )
-
-        topic = sns.Topic(
-            self, "MpsProjectTopic"
-        )
-
-        topic.add_subscription(subs.SqsSubscription(queue))
