@@ -114,7 +114,8 @@ def handler(event, context):
         now = datetime.datetime.now()
         s3_key = (
             f"raw/users/"
-            f"year={now.year}/month={now.month:02}/day={now.day:02}/" # Use the execution ID as the filename
+            f"year={now.year}/month={now.month:02}/day={now.day:02}/"
+            f"{context.aws_request_id}.parquet"  # Use the execution ID as the filename
         )
 
         parquet_buffer.seek(0)
