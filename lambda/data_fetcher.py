@@ -43,6 +43,7 @@ def handler(event, context):
         api_url = config("API_URL", default=None)
         requests_timeout = int(config("REQUESTS_TIMEOUT", default="0"))
         bucket_name = config("BUCKET_NAME")
+        filepath_base_storage = config("FILEPATH_BASE_STORAGE")
         
         # Validate configuration
         if not api_url:
@@ -57,6 +58,11 @@ def handler(event, context):
         
         if not bucket_name:
             msg = "BUCKET_NAME environment variable is not configured."
+            logger.error(msg)
+            raise ValueError(msg)
+        
+        if not filepath_base_storage:
+            msg = "FILEPATH_BASE_STORAGE environment variable is not configured."
             logger.error(msg)
             raise ValueError(msg)
         
@@ -113,8 +119,10 @@ def handler(event, context):
         # year=YYYY/month=MM/day=DD/file_UUID.parquet
         now = datetime.datetime.now()
         s3_key = (
-            f"raw/users/"
-            f"year={now.year}/month={now.month:02}/day={now.day:02}/"
+            f"{filepath_base_storage}/"
+            f"year={now.year}/"
+            f"month={now.month:02}/"
+            f"day={now.day:02}/"
             f"{context.aws_request_id}.parquet"  # Use the execution ID as the filename
         )
 

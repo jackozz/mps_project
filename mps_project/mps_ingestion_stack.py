@@ -30,9 +30,9 @@ class MpsIngestionStack(Stack):
         # Create IAM Role for Lambda execution
         lambda_role = iam.Role(
             self,
-            "MpsProjectLambdaRole",
+            id="MPS-LambdaRole",
             assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
-            description="IAM Role for MPS Project Lambda Function",
+            description="IAM Role for MPS Lambda Function",
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name(
                     "service-role/AWSLambdaBasicExecutionRole"
@@ -43,7 +43,7 @@ class MpsIngestionStack(Stack):
         # Create Lambda function for data fetching
         self.data_fetcher_lambda = _lambda.Function(
             self,
-            "DataFetcher",
+            id="MPS-DataFetcher",
             function_name="mps-data-fetcher",
             runtime=_lambda.Runtime.PYTHON_3_10,
             code=_lambda.Code.from_asset(

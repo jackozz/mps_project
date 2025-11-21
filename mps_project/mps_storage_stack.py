@@ -17,7 +17,8 @@ class StorageStack(Stack):
         # if you destroy the CDK stack. In production, we use RETAIN.
         # In this lab, we use DESTROY for convenience.
         self.data_bucket = s3.Bucket(
-            self, "DataLakeBucket",
+            self, 
+            id="MPS-DataLakeBucket",
             # Use CDK-generated name for global uniqueness
             bucket_name=None,
             # Encryption is always recommended

@@ -1,65 +1,29 @@
+# MPS Project
+This file contains relevant information about how develop and deploy AWS datalake solution.
 
-# Welcome to your CDK Python project!
+## **Requirements information**
+- Node.js: v24.11.1 (LTS)
+- Python: v3.11.14
+- Docker desktop (to check differences between project and AWS cloud)
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`mps_project_stack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+## **Phase 1: Setup & CDK**
+- AWS Regiom: `us-east-1`
+- Ppal stack name: `MPS-ProjectStack`
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## **Phase 2: Lambda + Random User API**
+- Focused in `result` data array from [web randomuser](https://randomuser.me/api/)
+- Ingest stack name: `MPS-IngestionStack`
 
-This project is set up like a standard Python project.  The initialization process also creates
-a virtualenv within this project, stored under the .venv directory.  To create the virtualenv
-it assumes that there is a `python3` executable in your path with access to the `venv` package.
-If for any reason the automatic creation of the virtualenv fails, you can create the virtualenv
-manually once the init process completes.
+## **Phase 3: S3 + Parquet**
+- Storage stack name: `MPS-StorageStack`
+- Parquet conversion and ETL Process with Lambda
+- Lifecycle transition: 30 days
 
-To manually create a virtualenv on MacOS and Linux:
-
-```
-$ python -m venv .venv
-```
-
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
-
-```
-$ source .venv/bin/activate
-```
-
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
-
-```
-$ cdk synth
-```
-
-You can now begin exploring the source code, contained in the hello directory.
-There is also a very trivial test included that can be run like this:
-
-```
-$ pytest
-```
-
-To add additional dependencies, for example other CDK libraries, just add to
-your requirements.txt file and rerun the `pip install -r requirements.txt`
-command.
-
-## Useful commands
-
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+## **Phase 4: Glue + Lake Formation**
+- Catalog stack name: `MPS-CatalogStack`
+- Lake Formation roles:
+    - mps-users-readonly: `gender`, `email`, `phone`, `cell`, `name.title`, `name.first`, `name.last`
+    - mps-analyst-readonly: All columns except `login` section
+    - mps-datacientist-readonly: All columns
+## **Phase 5: Athena**
+- 
