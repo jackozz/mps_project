@@ -21,9 +21,10 @@ This file contains relevant information about how develop and deploy AWS datalak
 
 ## **Phase 4: Glue + Lake Formation**
 - Catalog stack name: `MPS-CatalogStack`
-- Lake Formation roles:
-    - mps-users-readonly: `gender`, `email`, `phone`, `cell`, `name.title`, `name.first`, `name.last`
-    - mps-analyst-readonly: All columns except `login` section
-    - mps-datacientist-readonly: All columns
+- AWS Glue table name: `mps_users`
+- Lake Formation roles (Defined with AWS Web Console):
+    - mps-users-readonly: Only can view `email`, `phone`, `cell`, `name.title`, `name.first`, `name.last` columns
+    - mps-analyst-readonly: Can view all columns, except `login` section
+    - mps-datacientist-readonly: Can view all columns
 ## **Phase 5: Athena**
 - 
