@@ -121,7 +121,7 @@ class CatalogStack(Stack):
                 schedule_expression=crawler_schedule_expression
             ),
             # SchemaChangePolicy detects new columns automatically
-            table_prefix="user_",
+            table_prefix="mps_",
         )
 
         # Export outputs
