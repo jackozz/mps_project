@@ -84,4 +84,11 @@ This file contains relevant information about how develop and deploy AWS datalak
 | day | ❌ | ✅ | ✅ |
 
 ## **Phase 5: Athena**
-- 
+- Athena query test:
+```sql
+SELECT
+    email
+FROM mps.users
+GROUP BY 1, 2
+LIMIT 10;
+```
