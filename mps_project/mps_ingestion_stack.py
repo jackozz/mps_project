@@ -3,8 +3,10 @@ from aws_cdk import (
     Duration,
     Stack,
     CfnOutput,
+    RemovalPolicy,
     aws_iam as iam,
     aws_lambda as _lambda,
+    aws_logs as logs,
     aws_s3 as s3,
 )
 
@@ -66,6 +68,7 @@ class MpsIngestionStack(Stack):
                 "BUCKET_NAME": self.data_bucket.bucket_name,
                 "BUCKET_ARN": self.data_bucket.bucket_arn,
             },
+            log_retention=logs.RetentionDays.ONE_WEEK,
         )
 
         # Grant Lambda write permissions to the bucket
